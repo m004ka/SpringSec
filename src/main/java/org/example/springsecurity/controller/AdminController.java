@@ -38,10 +38,19 @@ public class AdminController {
         return "allUsers";
     }
 
+    @GetMapping("/create")
+    public String createUser() {
+        return "createUser";
+    }
+
     @PostMapping("/create")
-    public String createUser(@ModelAttribute NewUserDTO newUserDTO) {
+    public String createUser(@ModelAttribute NewUserDTO newUserDTO, Model model) {
+        if (userRepository.existsByUsername(newUserDTO.getUsername())) {
+            model.addAttribute("errors", "Пользователь с данным именем уже существует");
+            return "createUser";
+        }
         userService.createUser(newUserDTO);
-        return "allUsers";
+        return "redirect:/admin";
     }
 
     @GetMapping("/update/{id}")
@@ -80,11 +89,5 @@ public class AdminController {
     public String deleteUser(@RequestParam Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
-    }
-
-
-    @GetMapping("/hello")
-    public ResponseEntity<String> login() {
-        return ResponseEntity.ok("Working admin");
     }
 }
