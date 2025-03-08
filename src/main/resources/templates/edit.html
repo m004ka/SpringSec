@@ -9,21 +9,28 @@
 <div class="container mt-5">
     <h2>Edit User</h2>
     <form th:action="@{/user/update}" method="post">
-        <input type="hidden" name="id" th:value="${user.id}">
         <div class="mb-3">
-            <label for="name" class="form-label">Name:</label>
-            <input type="text" id="name" name="name" class="form-control" th:value="${user.name}" required>
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" th:value="${user.username}" required>
         </div>
         <div class="mb-3">
-            <label for="age" class="form-label">Age:</label>
-            <input type="number" id="age" name="age" class="form-control" th:value="${user.age}" required>
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label for="mail" class="form-label">Email:</label>
-            <input type="email" id="mail" name="mail" class="form-control" th:value="${user.mail}" required>
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" th:value="${user.email}" required>
+        </div>
+        <div class="mb-3">
+            <label for="roles" class="form-label">Roles:</label>
+            <select id="roles" name="roles" class="form-select" multiple>
+                <option th:each="role : ${allRoles}" th:value="${role.name}" th:text="${role.name}" th:selected="${user.roles.contains(role)}"></option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Save Changes</button>
         <a href="/user" class="btn btn-secondary">Cancel</a>
+
+        <a href="/logout" class="btn btn-danger btn-block">Logout</a>
     </form>
 </div>
 </body>
