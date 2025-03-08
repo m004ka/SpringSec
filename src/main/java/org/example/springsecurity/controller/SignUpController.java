@@ -30,6 +30,7 @@ public class SignUpController {
     @PostMapping("/signup")
     public String registerUser(@Valid NewUserDTO userDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors().toString());
             return "signup";
         }
 
