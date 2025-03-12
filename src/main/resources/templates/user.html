@@ -5,30 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Info</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar-btn {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .sidebar-btn:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .sidebar-btn.active {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container mt-5">
-    <h1 class="text-center mb-4">User Information</h1>
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-dark text-white p-2">
+    <span class="navbar-text" th:text="${userDTO.username} + ' with roles: ' + ${userDTO.getRoles()}"></span>
+    <a href="/logout" class="btn btn-light">Logout</a>
+</nav>
 
-    <div class="card">
-        <div class="card-header">
-            <h2>Profile</h2>
-        </div>
-        <div class="card-body">
-            <form action="#" th:object="${userDTO}">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" class="form-control" id="username" th:value="*{username}" readonly />
-                </div>
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="bg-light border-right vh-100 p-3" style="width: 200px;">
+        <p class="btn btn-primary sidebar-btn w-100">User</p>
+    </div>
 
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" th:value="*{email}" readonly />
-                </div>
+    <!-- Main content -->
+    <div class="container mt-5 flex-grow-1">
+        <h1 class="text-center mb-4">User Information</h1>
 
-                <a href="/logout" class="btn btn-danger btn-block">Logout</a>
-            </form>
+        <div class="card">
+            <div class="card-header">
+                <h2>Profile</h2>
+            </div>
+            <div class="card-body">
+                <form action="#" th:object="${userDTO}">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" th:value="*{username}" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" th:value="*{email}" readonly />
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
