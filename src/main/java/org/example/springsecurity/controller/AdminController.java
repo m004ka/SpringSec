@@ -1,5 +1,6 @@
 package org.example.springsecurity.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.springsecurity.dto.NewUserDTO;
 import org.example.springsecurity.dto.UserDTO;
@@ -31,11 +32,12 @@ public class AdminController {
 
 
     @GetMapping
-    public String getUsers(Model model) {
+    public String getUsers(HttpServletRequest request,  Model model) {
         model.addAttribute("allusers", userService.getAllUsers());
         model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("admin", UserDTO.getDTOFromRequest(request));
 
-        return "allUsers";
+        return "admin";
     }
 
     @GetMapping("/create")
@@ -85,9 +87,9 @@ public class AdminController {
     }
 
 
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam Long id) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
-    }
+        @PostMapping("/delete")
+        public String deleteUser(@RequestParam Long id) {
+            userService.deleteUser(id);
+            return "redirect:/admin";
+        }
 }
