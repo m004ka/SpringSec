@@ -32,12 +32,8 @@ public class AdminController {
 
 
     @GetMapping
-    public String getUsers(HttpServletRequest request,  Model model) {
-        model.addAttribute("allusers", userService.getAllUsers());
-        model.addAttribute("allRoles", roleRepository.findAll());
-        model.addAttribute("admin", UserDTO.getDTOFromRequest(request));
-
-        return "admin";
+    public String getUsers() {
+        return "adminjs";
     }
 
     @GetMapping("/create")

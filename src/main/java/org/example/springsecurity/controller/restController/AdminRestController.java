@@ -48,6 +48,7 @@ public class AdminRestController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO, @RequestParam String role) {
+        System.out.println("Вот дто\n\n\n"  + userDTO + "Вот дто\n\n\n" );
         if (userRepository.existsByUsername(userDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Пользователь с таким username уже существует");
@@ -56,6 +57,8 @@ public class AdminRestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Заполните все поля корректно");
         }
+
+
 
         userService.updateUser(id, userService.setRoleDTO(userDTO, role));
         return ResponseEntity.ok("Пользователь успешно обновлен");
