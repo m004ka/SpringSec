@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .sidebar-btn {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .sidebar-btn:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .sidebar-btn.active {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark text-white p-2">
+    <span class="navbar-text" id="user-info"></span>
+    <a href="/logout" class="btn btn-light">Logout</a>
+</nav>
+
+<div class="d-flex">
+    <div class="bg-light border-right vh-100 p-3" style="width: 200px;">
+        <p class="btn btn-primary sidebar-btn w-100">User</p>
+        <div id="admin-btn-container"></div>
+    </div>
+
+    <div class="container mt-5 flex-grow-1">
+        <h1 class="text-center mb-4">User Information</h1>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Profile</h2>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" readonly/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" readonly/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roles">Roles:</label>
+                        <input type="text" class="form-control" id="roles" readonly/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/user',
+            type: 'GET',
+            success: function (data) {
+                $('#user-info').text('Username: ' + data.username + ' with roles: ' + data.roles.map(role => role.role).join(', '));
+                $('#username').val(data.username);
+                $('#email').val(data.email);
+                $('#roles').val(data.roles.map(role => role.role).join(', '));
+
+                if (data.roles.some(role => role.role === 'ROLE_ADMIN')) {
+                    $('#admin-btn-container').append('<a href="http://localhost:8080/admin" class="btn btn-container sidebar-btn w-100">Admin</a>');
+                }
+            },
+            error: function () {
+                alert('Failed to fetch user data.');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
