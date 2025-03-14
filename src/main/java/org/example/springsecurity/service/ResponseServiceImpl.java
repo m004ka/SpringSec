@@ -44,7 +44,7 @@ public class ResponseServiceImpl implements ResponseService {
 
     @Override
     public ResponseEntity<String> createResponse(NewUserDTO userDTO) {
-        if(userRepository.existsByUsername(userDTO.getUsername())){
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
             return ResponseEntity.badRequest().body("Пользователь с username: " + userDTO.getUsername() + " уже существует");
         }
         userService.createUser(userDTO);
@@ -64,9 +64,7 @@ public class ResponseServiceImpl implements ResponseService {
         if (!userRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Аккаунт не существует"));
-
         return ResponseEntity.ok(UserDTO.getDTO(user));
     }
 
@@ -75,8 +73,7 @@ public class ResponseServiceImpl implements ResponseService {
         List<UserDTO> users = userService.getAllUsers();
 
         if (users.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
 
         return ResponseEntity.ok(users);
@@ -86,8 +83,7 @@ public class ResponseServiceImpl implements ResponseService {
     public ResponseEntity<List<Role>> getAllRoles() {
         List<Role> roles = roleRepository.findAll();
         if (roles.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
         return ResponseEntity.ok(roles);
     }

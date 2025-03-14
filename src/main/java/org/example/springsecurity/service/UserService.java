@@ -1,7 +1,6 @@
 package org.example.springsecurity.service;
 
 
-
 import org.example.springsecurity.dto.NewUserDTO;
 import org.example.springsecurity.dto.UserDTO;
 import org.example.springsecurity.model.User;
@@ -11,6 +10,7 @@ import java.util.List;
 public interface UserService {
 
     List<UserDTO> getAllUsers();
+
     User getUser(Long id);
 
     User createUser(NewUserDTO userDTO);

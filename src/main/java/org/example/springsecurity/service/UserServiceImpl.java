@@ -52,10 +52,18 @@ public class UserServiceImpl implements UserService {
     public User updateUser(Long id, UserDTO userDTO) {
         User user = userRepository.getUserById(id).orElseThrow(() -> new RuntimeException("Пользователь с id = " + id + " не найден"));
 
-        user.setUsername(userDTO.getUsername());
-        user.setEmail(userDTO.getEmail());
+        if (userDTO.getUsername() != null) {
+            user.setUsername(userDTO.getUsername());
+        }
+        if (userDTO.getEmail() != null) {
+            user.setEmail(userDTO.getEmail());
+        }
         user.setRoles(userDTO.getRoles());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        System.out.println("Пароль" + userDTO.getPassword());
+        if (userDTO.getPassword() != null) {
+            System.out.println("Пароль" + userDTO.getPassword());
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
 
         userRepository.save(user);
 

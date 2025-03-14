@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRestController {
     @GetMapping
     public ResponseEntity<UserDTO> getUserInfo(HttpServletRequest request) {
-        UserDTO userDTO = UserDTO.getDTOFromRequest(request);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(UserDTO.getDTOFromRequest(request));
     }
 }

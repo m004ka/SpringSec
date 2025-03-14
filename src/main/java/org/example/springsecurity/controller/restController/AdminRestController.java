@@ -1,14 +1,11 @@
 package org.example.springsecurity.controller.restController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.springsecurity.dto.NewUserDTO;
 import org.example.springsecurity.dto.UserDTO;
 import org.example.springsecurity.model.Role;
-import org.example.springsecurity.model.User;
-import org.example.springsecurity.repositories.RoleRepository;
-import org.example.springsecurity.repositories.UserRepository;
-import org.example.springsecurity.service.UserService;
-import org.springframework.http.HttpStatus;
+import org.example.springsecurity.service.ResponseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,59 +17,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminRestController {
 
-    private final UserService userService;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final ResponseService responseService;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+        return responseService.getUsers();
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Пользователь с id = " + id + " не найден"));
-        return ResponseEntity.ok(UserDTO.getDTO(user));
+        return responseService.getUserResponse(id);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createUser(@RequestBody NewUserDTO newUserDTO) {
-        if (userRepository.existsByUsername(newUserDTO.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Пользователь с данным именем уже существует");
-        }
-        userService.createUser(newUserDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Пользователь успешно создан");
+    public ResponseEntity<String> createUser(@Valid @RequestBody NewUserDTO newUserDTO) {
+        return responseService.createResponse(newUserDTO);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO, @RequestParam String role) {
-        System.out.println("Вот дто\n\n\n"  + userDTO + "Вот дто\n\n\n" );
-        if (userRepository.existsByUsername(userDTO.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Пользователь с таким username уже существует");
-        }
-        if (UserDTO.ValidateDTO(userDTO) || role == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Заполните все поля корректно");
-        }
-
-
-
-        userService.updateUser(id, userService.setRoleDTO(userDTO, role));
-        return ResponseEntity.ok("Пользователь успешно обновлен");
+        return responseService.updateResponse(id, userDTO, role);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.ok("Пользователь успешно удален");
+        return responseService.deleteResponse(id);
     }
 
     @GetMapping("/roles")
     public ResponseEntity<List<Role>> getAllRoles() {
-        List<Role> roles = roleRepository.findAll();
-        return ResponseEntity.ok(roles);
+
+        return responseService.getAllRoles();
     }
 }
