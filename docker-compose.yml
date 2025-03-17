@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: dbcont
+    environment:
+      - POSTGRES_DB=server
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=adminbmw
+    networks:
+      - bmw
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring_security_app
+    depends_on:
+      - db
+    environment:
+      - DB_CONNECT=jdbc:postgresql://db:5432/server
+      - DB_PASSWORD=adminbmw
+      - DB_USER=postgres
+    networks:
+      - bmw
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    command: /usr/local/bin/wait-for-it.sh db:5432 -- java -jar app.jar
+
+networks:
+  bmw:
+    driver: bridge
+
+volumes:
+  postgres_data:
