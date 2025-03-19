@@ -79,6 +79,7 @@ jobs:
           source: "docker-compose.yml"
           target: "~/app"
           debug: true
+          options: "-o StrictHostKeyChecking=no"
 
       - name: Run docker-compose on server
         uses: appleboy/ssh-action@master
