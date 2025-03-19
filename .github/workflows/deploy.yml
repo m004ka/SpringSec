@@ -25,14 +25,14 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t m004ka/SpringUserApplication:latest .
+          docker build -t m004ka/springuserapplication:latest .
 
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push m004ka/SpringUserApplication:latest
+          docker push m004ka/springuserapplication:latest
 
       - name: Verify Docker image is pushed
         run: |
-          docker pull m004ka/SpringUserApplication:latest
+          docker pull m004ka/springuserapplication:latest
 
