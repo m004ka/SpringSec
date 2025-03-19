@@ -78,7 +78,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "docker-compose.yml"
-          target: "~/app"
+          target: "/app"
           debug: true
 
       - name: Run docker-compose on server
@@ -89,6 +89,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd ~/app
+            cd /app
             docker-compose pull
             docker-compose up -d
