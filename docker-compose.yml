@@ -30,8 +30,6 @@ services:
       - bmw
     ports:
       - "8080:8080"
-    env_file:
-      - .env
     command: /usr/local/bin/wait-for-it.sh db:5432 -- java -jar app.jar
 
 networks:
