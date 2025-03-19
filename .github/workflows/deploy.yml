@@ -72,8 +72,9 @@ jobs:
       - name: Copy docker-compose.yml to server via SSH
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SSH_HOSTT }}
-          username: ${{ secrets.SSH_USER }}
+          username: "m004ka"
+          port: 22
+          host: ${{ secrets.SSH_HOST}}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "docker-compose.yml"
           target: "~/app"
@@ -83,7 +84,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOSTT }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          post: 22
           script: |
             cd ~/app
             docker-compose pull
