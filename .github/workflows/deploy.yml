@@ -78,6 +78,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "docker-compose.yml"
           target: "~/app"
+          debug: true
 
       - name: Run docker-compose on server
         uses: appleboy/ssh-action@master
