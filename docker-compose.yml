@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   db:
     image: postgres:latest
@@ -16,7 +14,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   app:
-    image: openjdk:17-jre-slim  
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: spring_security_app
     depends_on:
       - db
@@ -28,9 +28,7 @@ services:
       - bmw
     ports:
       - "8080:8080"
-    volumes:
-      - ./app.jar:/app/app.jar  
-    command: java -jar /app/app.jar  
+    command: /usr/local/bin/wait-for-it.sh db:5432 -- java -jar app.jar
 
 networks:
   bmw:
