@@ -12,14 +12,19 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: m004ka/spring-security-app:latest
     container_name: spring_security_app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DB_CONNECT=jdbc:postgresql://db:5432/server
       - DB_PASSWORD=adminbmw
@@ -28,7 +33,8 @@ services:
       - bmw
     ports:
       - "8080:8080"
-    command: /usr/local/bin/wait-for-it.sh db:5432 -- java -jar app.jar
+    restart: unless-stopped
+    command: ["java", "-jar", "app.jar"]
 
 networks:
   bmw:
