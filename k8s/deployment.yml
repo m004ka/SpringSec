@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-security-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-security-app
+  template:
+    metadata:
+      labels:
+        app: spring-security-app
+    spec:
+      containers:
+        - name: spring-security-app
+          image: m004ka/spring_security_app:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_CONNECT
+              valueFrom:
+                secretKeyRef:
+                  name: spring-security-app
+                  key: DB_CONNECT
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: spring-security-app
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: spring-security-app
+                  key: DB_PASSWORD
